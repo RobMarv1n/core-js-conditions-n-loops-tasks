@@ -91,8 +91,12 @@ function canQueenCaptureKing(queen, king) {
  *  2, 2, 5   => false
  *  3, 0, 3   => false
  */
-function isIsoscelesTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isIsoscelesTriangle(a, b, c) {
+  if (!a || !b || !c) return false;
+  if (a === b && a * 2 > c) return true;
+  if (a === c && a * 2 > b) return true;
+  if (b === c && b * 2 > a) return true;
+  return false;
 }
 
 /**
@@ -109,8 +113,46 @@ function isIsoscelesTriangle(/* a, b, c */) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
+function convertToRomanNumerals(num) {
+  let romanNum = '';
+  if (num >= 10) {
+    const tens = Math.floor(num / 10);
+    if (tens === 1) romanNum += 'X';
+    if (tens === 2) romanNum += 'XX';
+    if (tens === 3) romanNum += 'XXX';
+  }
+  switch (num % 10) {
+    case 1:
+      romanNum += 'I';
+      break;
+    case 2:
+      romanNum += 'II';
+      break;
+    case 3:
+      romanNum += 'III';
+      break;
+    case 4:
+      romanNum += 'IV';
+      break;
+    case 5:
+      romanNum += 'V';
+      break;
+    case 6:
+      romanNum += 'VI';
+      break;
+    case 7:
+      romanNum += 'VII';
+      break;
+    case 8:
+      romanNum += 'VIII';
+      break;
+    case 9:
+      romanNum += 'IX';
+      break;
+    default:
+      break;
+  }
+  return romanNum;
 }
 
 /**
@@ -128,8 +170,48 @@ function convertToRomanNumerals(/* num */) {
  *  '10,5'    => 'one zero point five'
  *  '1950.2'  => 'one nine five zero point two'
  */
-function convertNumberToString(/* numberStr */) {
-  throw new Error('Not implemented');
+function convertNumberToString(numberStr) {
+  let strNumber = '';
+  for (let i = 0; i < numberStr.length; i += 1) {
+    if (i > 0 && i < numberStr.length) strNumber += ' ';
+    if (numberStr[i] === '-') strNumber += 'minus';
+    if (numberStr[i] === '.' || numberStr[i] === ',') strNumber += 'point';
+    switch (numberStr[i]) {
+      case '0':
+        strNumber += 'zero';
+        break;
+      case '1':
+        strNumber += 'one';
+        break;
+      case '2':
+        strNumber += 'two';
+        break;
+      case '3':
+        strNumber += 'three';
+        break;
+      case '4':
+        strNumber += 'four';
+        break;
+      case '5':
+        strNumber += 'five';
+        break;
+      case '6':
+        strNumber += 'six';
+        break;
+      case '7':
+        strNumber += 'seven';
+        break;
+      case '8':
+        strNumber += 'eight';
+        break;
+      case '9':
+        strNumber += 'nine';
+        break;
+      default:
+        break;
+    }
+  }
+  return strNumber;
 }
 
 /**
