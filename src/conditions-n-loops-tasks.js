@@ -291,8 +291,23 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  let leftSum = 0;
+  let rightSum = 0;
+  for (let i = 0; i < arr.length - 1; i += 1) {
+    for (let j = 0; j < i; j += 1) {
+      leftSum += arr[j];
+    }
+    for (let k = i + 1; k < arr.length; k += 1) {
+      rightSum += arr[k];
+    }
+    if (leftSum === rightSum) {
+      return i;
+    }
+    leftSum = 0;
+    rightSum = 0;
+  }
+  return -1;
 }
 
 /**
@@ -316,8 +331,42 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const fullSize = size * size;
+  const matrix = [];
+
+  for (let i = 0; i <= size - 1; i += 1) {
+    matrix[i] = [];
+  }
+
+  let column = 0;
+  let lastColumn = size - 1;
+  let row = 0;
+  let lastRow = size - 1;
+
+  for (let num = 1; num <= fullSize; ) {
+    for (let j = row; j <= lastColumn; j += 1, num += 1) {
+      matrix[row][j] = num;
+    }
+    row += 1;
+
+    for (let j = row; j <= lastRow; j += 1, num += 1) {
+      matrix[j][lastColumn] = num;
+    }
+    lastColumn -= 1;
+
+    for (let j = lastColumn; j >= column; j -= 1, num += 1) {
+      matrix[lastRow][j] = num;
+    }
+    lastRow -= 1;
+
+    for (let j = lastRow; j >= row; j -= 1, num += 1) {
+      matrix[j][column] = num;
+    }
+    column += 1;
+  }
+
+  return matrix;
 }
 
 /**
@@ -335,8 +384,15 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const cloneMatrix = JSON.parse(JSON.stringify(matrix));
+  const rotatedMatrix = matrix;
+  for (let i = 0; i < matrix.length; i += 1) {
+    for (let j = 0; j < matrix.length; j += 1) {
+      rotatedMatrix[i][matrix.length - 1 - j] = cloneMatrix[j][i];
+    }
+  }
+  return rotatedMatrix;
 }
 
 /**
