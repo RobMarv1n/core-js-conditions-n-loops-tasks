@@ -292,7 +292,7 @@ function isContainNumber(num, digit) {
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
 function getBalanceIndex(arr) {
-  if (arr.length === 0) return -1;
+  if (arr.length <= 2) return -1;
   let leftSum = 0;
   let rightSum = 0;
   for (let i = 0; i < arr.length - 1; i += 1) {
@@ -410,8 +410,24 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  if (arr.length === 0) return arr;
+  const sortedArr = arr;
+  const p = arr[0];
+  const sortedLeft = [];
+  const sortedRight = [];
+  for (let i = 1; i < arr.length; i += 1) {
+    if (arr[i] < p) {
+      sortedLeft[sortedLeft.length] = arr[i];
+    } else {
+      sortedRight[sortedRight.length] = arr[i];
+    }
+  }
+  const result = [...sortByAsc(sortedLeft), p, ...sortByAsc(sortedRight)];
+  for (let i = 0; i < arr.length; i += 1) {
+    sortedArr[i] = result[i];
+  }
+  return sortedArr;
 }
 
 /**
@@ -431,8 +447,48 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let shuffleStr = str;
+  let cycle = 0;
+  function getCycle(iteration) {
+    for (let i = 0; i < iteration; i += 1) {
+      let startStr = '';
+      let endStr = '';
+      for (let j = 0; j < str.length; j += 1) {
+        if (j % 2 === 0) {
+          startStr += shuffleStr[j];
+        } else {
+          endStr += shuffleStr[j];
+        }
+      }
+      startStr += endStr;
+      shuffleStr = startStr;
+      if (shuffleStr === str) {
+        cycle = i + 1;
+        break;
+      }
+    }
+    return cycle;
+  }
+  cycle = iterations % getCycle(iterations);
+
+  if (cycle > 0) {
+    for (let i = 0; i < cycle; i += 1) {
+      let startStr = '';
+      let endStr = '';
+      for (let j = 0; j < str.length; j += 1) {
+        if (j % 2 === 0) {
+          startStr += shuffleStr[j];
+        } else {
+          endStr += shuffleStr[j];
+        }
+      }
+      startStr += endStr;
+      shuffleStr = startStr;
+    }
+  }
+
+  return shuffleStr;
 }
 
 /**
@@ -452,8 +508,54 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  let numArr = Array.from(String(number), Number);
+  if (numArr.length <= 1) return number;
+  let smaller = 0;
+  let indexSmaller = 0;
+  let find = false;
+  for (let i = numArr.length - 1; i > 0; i -= 1) {
+    if (numArr[i - 1] < numArr[i] && !find) {
+      smaller = numArr[i - 1];
+      indexSmaller = i - 1;
+      find = true;
+    }
+  }
+  if (!find) return number;
+
+  let bigger = 0;
+  const biggerArr = [];
+  for (let i = indexSmaller; i < numArr.length; i += 1) {
+    if (numArr[i] > smaller) {
+      biggerArr.push(numArr[i]);
+    }
+  }
+  biggerArr.sort((a, b) => a - b);
+  bigger = biggerArr[bigger];
+
+  let indexBigger = 0;
+  find = false;
+  for (let i = numArr.length - 1; i > 0; i -= 1) {
+    if (numArr[i] === bigger && !find) {
+      indexBigger = i;
+      find = true;
+    }
+  }
+
+  [numArr[indexSmaller], numArr[indexBigger]] = [
+    numArr[indexBigger],
+    numArr[indexSmaller],
+  ];
+
+  const sortTail = numArr
+    .filter((el, index) => index > indexSmaller)
+    .sort((a, b) => a - b);
+  numArr = [
+    ...numArr.filter((el, index) => index < indexSmaller + 1),
+    ...sortTail,
+  ];
+
+  return +numArr.join('');
 }
 
 module.exports = {
